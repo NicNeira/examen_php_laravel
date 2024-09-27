@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -80,8 +81,28 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Implementar lógica para crear un nuevo usuario
-        // Asegúrate de manejar permisos si es necesario
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'rut' => ['required', 'string', 'max:12', 'unique:users'],
+            'lastname' => ['required', 'string', 'max:255'],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'rut' => $request->rut,
+            'lastname' => $request->lastname,
+        ]);
+
+        event(new Registered($user));
+
+        // logearse automáticamente después de registrarse
+        // Auth::login($user);
+
+        return response()->json(['message' => 'Usuario creado exitosamente'], 200);
     }
 
     public function show($id)
@@ -90,13 +111,37 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        // Implementar lógica para actualizar un usuario existente
+        $user = User::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'rut' => 'required|string|max:12|unique:users,rut,' . $id,
+            'lastname' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed', // Permite null para no cambiar contraseña
+        ]);
+
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->rut = $validatedData['rut'];
+        $user->lastname = $validatedData['lastname'];
+
+        if (!empty($validatedData['password'])) {
+            $user->password = Hash::make($validatedData['password']);
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Usuario actualizado exitosamente'], 200);
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        // Implementar lógica para eliminar un usuario
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'Usuario eliminado exitosamente'], 200);
     }
 }
