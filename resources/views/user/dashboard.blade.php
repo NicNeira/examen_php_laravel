@@ -21,55 +21,53 @@
     </button>
   </div>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <!-- <th>ID</th> -->
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>RUT</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($users as $user)
-      <tr>
-        <!-- <td>{{ $user->user }}</td> -->
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->lastname }}</td>
-        <td>{{ $user->rut }}</td>
-        <td>{{ $user->email }}</td>
-        <!-- <td>
-          <span class="badge bg-{{ $user->activo ? 'success' : 'danger' }}">
-            {{ $user->activo ? 'Activo' : 'Inactivo' }}
-          </span>
-        </td> -->
-        <td>
-          <!-- Ver Usuario -->
-          <button class="btn btn-sm btn-info view-user" data-id="{{ $user->id }}" title="Ver" data-bs-toggle="modal" data-bs-target="#viewModal">
-            <i class="bi bi-eye" aria-hidden="true"></i>
-          </button>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>RUT</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach($users as $user)
+        <tr>
+          <td>
+            <span class="fw-medium">{{ $user->name }}</span>
+          </td>
+          <td>{{ $user->lastname }}</td>
+          <td>{{ $user->rut }}</td>
+          <td>{{ $user->email }}</td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="ti ti-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <!-- Ver Usuario -->
+                <a class="dropdown-item view-user" data-id="{{ $user->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#viewModal">
+                  <i class="ti ti-eye me-1"></i> Ver
+                </a>
+                <!-- Editar Usuario -->
+                <a class="dropdown-item edit-user" data-id="{{ $user->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal">
+                  <i class="ti ti-pencil me-1"></i> Editar
+                </a>
+                <!-- Eliminar Usuario -->
+                <a class="dropdown-item delete-user" data-id="{{ $user->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                  <i class="ti ti-trash me-1"></i> Eliminar
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
 
-          <!-- Editar Usuario -->
-          <button class="btn btn-sm btn-warning edit-user" data-id="{{ $user->id }}" title="Editar" data-bs-toggle="modal" data-bs-target="#editModal">
-            <i class="bi bi-pencil" aria-hidden="true"></i>
-          </button>
-
-          <!-- Cambiar Estado -->
-          <!-- <button class="btn btn-sm toggle-status {{ $user->activo ? 'btn-danger' : 'btn-success' }}" data-id="{{ $user->id }}" title="Cambiar estado">
-
-            <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
-          </button> -->
-
-          <!-- Eliminar Usuario -->
-          <button class="btn btn-sm btn-danger delete-project" data-id="{{ $user->id }}" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="bi bi-trash" aria-hidden="true"></i>
-          </button>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
 </div>
 
 @if(session('success'))

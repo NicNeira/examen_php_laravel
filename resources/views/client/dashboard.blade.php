@@ -21,49 +21,57 @@
     </button>
   </div>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>RUT Empresa</th>
-        <th>Rubro</th>
-        <th>Razón Social</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-        <th>Nombre de Contacto</th>
-        <th>Email de Contacto</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($clients as $client)
-      <tr>
-        <td>{{ $client->rut_empresa }}</td>
-        <td>{{ $client->rubro }}</td>
-        <td>{{ $client->razon_social }}</td>
-        <td>{{ $client->telefono }}</td>
-        <td>{{ $client->direccion }}</td>
-        <td>{{ $client->nombre_contacto }}</td>
-        <td>{{ $client->email_contacto }}</td>
-        <td>
-          <!-- Ver cliente -->
-          <button class="btn btn-sm btn-info view-client" data-id="{{ $client->id }}" title="Ver" data-bs-toggle="modal" data-bs-target="#viewModal">
-            <i class="bi bi-eye" aria-hidden="true"></i>
-          </button>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>RUT Empresa</th>
+          <th>Rubro</th>
+          <th>Razón Social</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+          <th>Nombre de Contacto</th>
+          <th>Email de Contacto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach($clients as $client)
+        <tr>
+          <td>{{ $client->rut_empresa }}</td>
+          <td>{{ $client->rubro }}</td>
+          <td><span class="fw-medium">{{ $client->razon_social }}</span></td>
+          <td>{{ $client->telefono }}</td>
+          <td>{{ $client->direccion }}</td>
+          <td>{{ $client->nombre_contacto }}</td>
+          <td>{{ $client->email_contacto }}</td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="ti ti-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <!-- Ver Cliente -->
+                <a class="dropdown-item view-client" data-id="{{ $client->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#viewModal">
+                  <i class="ti ti-eye me-1"></i> Ver
+                </a>
+                <!-- Editar Cliente -->
+                <a class="dropdown-item edit-client" data-id="{{ $client->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal">
+                  <i class="ti ti-pencil me-1"></i> Editar
+                </a>
+                <!-- Eliminar Cliente -->
+                <a class="dropdown-item delete-client" data-id="{{ $client->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                  <i class="ti ti-trash me-1"></i> Eliminar
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
 
-          <!-- Editar cliente -->
-          <button class="btn btn-sm btn-warning edit-client" data-id="{{ $client->id }}" title="Editar" data-bs-toggle="modal" data-bs-target="#editModal">
-            <i class="bi bi-pencil" aria-hidden="true"></i>
-          </button>
-
-          <!-- Eliminar cliente -->
-          <button class="btn btn-sm btn-danger delete-client" data-id="{{ $client->id }}" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="bi bi-trash" aria-hidden="true"></i>
-          </button>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
 </div>
 
 @if(session('success'))

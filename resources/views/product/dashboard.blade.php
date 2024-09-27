@@ -21,63 +21,71 @@
     </button>
   </div>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <!-- <th>ID</th> -->
-        <th>Sku</th>
-        <th>Nombre</th>
-        <th>Descripcion Corta</th>
-        <th>Descripcion Larga</th>
-        <th>Imagen</th>
-        <th>Precio Neto</th>
-        <th>Precio Venta</th>
-        <th>Stock Actual</th>
-        <th>Stock Minimo</th>
-        <th>Stock Bajo</th>
-        <th>Stock Alto</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($products as $product)
-      <tr>
-        <td>{{ $product->sku }}</td>
-        <td>{{ $product->nombre }}</td>
-        <td>{{ $product->descripcion_corta }}</td>
-        <td>{{ $product->descripcion_larga }}</td>
-        <td>
-          @if($product->imagen)
-          <img src="{{ asset('storage/' . $product->imagen) }}" alt="Imagen del product" style="width: 50px; height: auto;">
-          @else
-          Sin imagen
-          @endif
-        </td>
-        <td>{{ $product->precio_neto }}</td>
-        <td>{{ $product->precio_venta }}</td>
-        <td>{{ $product->stock_actual }}</td>
-        <td>{{ $product->stock_minimo }}</td>
-        <td>{{ $product->stock_bajo }}</td>
-        <td>{{ $product->stock_alto }}</td>
-        <td>
-          <!-- Ver product -->
-          <button class="btn btn-sm btn-info view-product" data-id="{{ $product->id }}" title="Ver" data-bs-toggle="modal" data-bs-target="#viewModal">
-            <i class="bi bi-eye" aria-hidden="true"></i>
-          </button>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Sku</th>
+          <th>Nombre</th>
+          <th>Descripcion Corta</th>
+          <th>Descripcion Larga</th>
+          <th>Imagen</th>
+          <th>Precio Neto</th>
+          <th>Precio Venta</th>
+          <th>Stock Actual</th>
+          <th>Stock Minimo</th>
+          <th>Stock Bajo</th>
+          <th>Stock Alto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach($products as $product)
+        <tr>
+          <td>{{ $product->sku }}</td>
+          <td><span class="fw-medium">{{ $product->nombre }}</span></td>
+          <td>{{ $product->descripcion_corta }}</td>
+          <td>{{ $product->descripcion_larga }}</td>
+          <td>
+            @if($product->imagen)
+            <img src="{{ asset('storage/' . $product->imagen) }}" alt="Imagen del producto" style="width: 50px; height: auto;">
+            @else
+            Sin imagen
+            @endif
+          </td>
+          <td>{{ $product->precio_neto }}</td>
+          <td>{{ $product->precio_venta }}</td>
+          <td>{{ $product->stock_actual }}</td>
+          <td>{{ $product->stock_minimo }}</td>
+          <td>{{ $product->stock_bajo }}</td>
+          <td>{{ $product->stock_alto }}</td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="ti ti-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <!-- Ver Producto -->
+                <a class="dropdown-item view-product" data-id="{{ $product->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#viewModal">
+                  <i class="ti ti-eye me-1"></i> Ver
+                </a>
+                <!-- Editar Producto -->
+                <a class="dropdown-item edit-product" data-id="{{ $product->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#editModal">
+                  <i class="ti ti-pencil me-1"></i> Editar
+                </a>
+                <!-- Eliminar Producto -->
+                <a class="dropdown-item delete-product" data-id="{{ $product->id }}" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                  <i class="ti ti-trash me-1"></i> Eliminar
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
 
-          <!-- Editar product -->
-          <button class="btn btn-sm btn-warning edit-product" data-id="{{ $product->id }}" title="Editar" data-bs-toggle="modal" data-bs-target="#editModal">
-            <i class="bi bi-pencil" aria-hidden="true"></i>
-          </button>
-
-          <!-- Eliminar product -->
-          <button class="btn btn-sm btn-danger delete-product" data-id="{{ $product->id }}" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="bi bi-trash" aria-hidden="true"></i>
-          </button>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
 </div>
 
 @if(session('success'))

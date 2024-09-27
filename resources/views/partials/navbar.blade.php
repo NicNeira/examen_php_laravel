@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light zindexNav">
   <div class="container-fluid">
     <!-- Logo o título de la aplicación -->
     <a class="navbar-brand" href="{{ route('dashboard') }}">Mi Aplicación</a>

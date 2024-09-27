@@ -6674,6 +6674,10 @@ textarea.form-control-lg {
   background-color: RGBA(var(--bs-danger-rgb), var(--bs-bg-opacity, 1)) !important;
 }
 
+.zindexNav{
+  z-index: 10 !important; /* Fuerza el z-index del navbar */
+}
+
 .text-bg-light {
   color: #fff !important;
   background-color: RGBA(var(--bs-light-rgb), var(--bs-bg-opacity, 1)) !important;

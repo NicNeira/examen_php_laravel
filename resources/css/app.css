@@ -1,3 +1,7 @@
 #loadingSpinner {
   display: none !important; /* Fuerza el ocultamiento del spinner */
 }
+
+.zindexNav{
+  z-index: 10 !important; /* Fuerza el z-index del navbar */
+}

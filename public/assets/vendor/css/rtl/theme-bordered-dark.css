@@ -1540,10 +1540,7 @@ li.ui-timepicker-selected,
 }
 
 .layout-navbar-fixed .layout-page:before {
-  backdrop-filter: saturate(200%) blur(10px);
-  background: linear-gradient(180deg, rgba(47, 51, 73, 0.7) 44%, rgba(47, 51, 73, 0.43) 73%, rgba(47, 51, 73, 0));
-  -webkit-mask: linear-gradient(#2f3349, #2f3349 18%, transparent 100%);
-  mask: linear-gradient(#2f3349, #2f3349 18%, transparent 100%);
+  
 }
 
 .layout-horizontal .layout-navbar {
