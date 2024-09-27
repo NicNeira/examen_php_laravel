@@ -39,31 +39,31 @@
   <div class="menu-inner-shadow"></div>
 
   <ul class="menu-inner py-1">
-    <!-- Dashboards -->
+    <!-- Dashboard -->
     <li class="menu-item">
-      <a href="{{ Route('dashboard') }}" class="menu-link menu-toggle">
+      <a href="{{ route('dashboard') }}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-smart-home"></i>
-        <div>Dashboards</div>
+        <div>Dashboard</div>
       </a>
     </li>
     <!-- Usuarios -->
     <li class="menu-item">
-      <a href="{{ Route('user.dashboard') }}" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <a href="{{ route('user.dashboard') }}" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-users"></i>
         <div>Usuarios</div>
       </a>
     </li>
     <!-- Productos -->
     <li class="menu-item">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <a href="{{ route('product.dashboard') }}" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-package"></i>
         <div>Productos</div>
       </a>
     </li>
     <!-- Clientes -->
     <li class="menu-item">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <a href="{{ route('client.dashboard') }}" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-address-book"></i>
         <div>Clientes</div>
       </a>
     </li>

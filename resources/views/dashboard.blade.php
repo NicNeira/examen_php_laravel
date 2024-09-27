@@ -1,6 +1,6 @@
 @extends('layouts.temp')
 
-@section('title', 'Landing Page')
+@section('title', 'Dashboard')
 
 @section('content')
 <div class="container">
@@ -8,54 +8,49 @@
     <div class="col-md-12">
         <div class="card h-100">
             <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title mb-0">Statistics</h5>
-                <small class="text-muted">Updated 1 month ago</small>
+                <h5 class="card-title mb-0">Estadísticas</h5>
+                <small class="text-muted">Actualizado {{ now()->diffForHumans() }}</small>
             </div>
             <div class="card-body d-flex align-items-end">
                 <div class="w-100">
                     <div class="row gy-3">
-                        <div class="col-md-3 col-6">
+                        <!-- Usuarios -->
+                        <div class="col-md-4 col-6">
                             <div class="d-flex align-items-center">
                                 <div class="badge rounded bg-label-primary me-4 p-2">
-                                    <i class="ti ti-chart-pie-2 ti-lg"></i>
+                                    <i class="ti ti-users ti-lg"></i>
                                 </div>
                                 <div class="card-info">
-                                    <h5 class="mb-0">230k</h5>
-                                    <small>Sales</small>
+                                    <h5 class="mb-0">{{ $totalUsers }}</h5>
+                                    <small>Usuarios</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="badge rounded bg-label-info me-4 p-2"><i class="ti ti-users ti-lg"></i></div>
-                                <div class="card-info">
-                                    <h5 class="mb-0">8.549k</h5>
-                                    <small>Customers</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6">
+                        <!-- Productos -->
+                        <div class="col-md-4 col-6">
                             <div class="d-flex align-items-center">
                                 <div class="badge rounded bg-label-danger me-4 p-2">
-                                    <i class="ti ti-shopping-cart ti-lg"></i>
+                                    <i class="ti ti-package ti-lg"></i>
                                 </div>
                                 <div class="card-info">
-                                    <h5 class="mb-0">1.423k</h5>
-                                    <small>Products</small>
+                                    <h5 class="mb-0">{{ $totalProducts }}</h5>
+                                    <small>Productos</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
+                        <!-- Clientes -->
+                        <div class="col-md-4 col-6">
                             <div class="d-flex align-items-center">
                                 <div class="badge rounded bg-label-success me-4 p-2">
-                                    <i class="ti ti-currency-dollar ti-lg"></i>
+                                    <i class="ti ti-address-book ti-lg"></i>
                                 </div>
                                 <div class="card-info">
-                                    <h5 class="mb-0">$9745</h5>
-                                    <small>Revenue</small>
+                                    <h5 class="mb-0">{{ $totalClients }}</h5>
+                                    <small>Clientes</small>
                                 </div>
                             </div>
                         </div>
+                        <!-- Puedes agregar más métricas si lo deseas -->
                     </div>
                 </div>
             </div>

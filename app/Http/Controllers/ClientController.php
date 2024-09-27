@@ -13,7 +13,8 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return response()->json($clients);
+        // Retorna la vista del dashboard de clientes
+        return view('client.dashboard', compact('clients'));
     }
 
     /**
@@ -21,8 +22,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        // Retorna la vista para crear un nuevo cliente
-        return view('clients.create');
+        // Si no utilizas esta función, puedes eliminarla o dejarla vacía.
     }
 
     /**
@@ -31,18 +31,27 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'rut' => 'required|string|unique:clients',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:clients',
+            'rut_empresa' => 'required|string|unique:clients',
+            'rubro' => 'required|string|max:255',
+            'razon_social' => 'required|string|max:255',
+            'telefono' => 'required|string|max:20',
+            'direccion' => 'required|string|max:255',
+            'nombre_contacto' => 'required|string|max:255',
+            'email_contacto' => 'required|string|email|max:255|unique:clients',
         ]);
 
         $client = new Client();
-        $client->rut = $validatedData['rut'];
-        $client->name = $validatedData['name'];
-        $client->email = $validatedData['email'];
+        $client->rut_empresa = $validatedData['rut_empresa'];
+        $client->rubro = $validatedData['rubro'];
+        $client->razon_social = $validatedData['razon_social'];
+        $client->telefono = $validatedData['telefono'];
+        $client->direccion = $validatedData['direccion'];
+        $client->nombre_contacto = $validatedData['nombre_contacto'];
+        $client->email_contacto = $validatedData['email_contacto'];
         $client->save();
 
-        return response()->json(['message' => 'Cliente creado exitosamente', 'client' => $client], 201);
+        // Puedes redirigir al dashboard con un mensaje de éxito
+        return redirect()->route('client.dashboard')->with('success', 'Cliente creado exitosamente');
     }
 
     /**
@@ -59,11 +68,8 @@ class ClientController extends Controller
      */
     public function edit(string $id)
     {
-        // Encuentra el cliente por su ID
         $client = Client::findOrFail($id);
-
-        // Retorna la vista para editar un cliente, pasando el cliente a la vista
-        return view('clients.edit', compact('client'));
+        return response()->json($client);
     }
 
     /**
@@ -74,24 +80,41 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
 
         $validatedData = $request->validate([
-            'rut' => 'sometimes|required|string|unique:clients,rut,' . $id,
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:clients,email,' . $id,
+            'rut_empresa' => 'sometimes|required|string|unique:clients,rut_empresa,' . $id,
+            'rubro' => 'sometimes|required|string|max:255',
+            'razon_social' => 'sometimes|required|string|max:255',
+            'telefono' => 'sometimes|required|string|max:20',
+            'direccion' => 'sometimes|required|string|max:255',
+            'nombre_contacto' => 'sometimes|required|string|max:255',
+            'email_contacto' => 'sometimes|required|string|email|max:255|unique:clients,email_contacto,' . $id,
         ]);
 
-        if (isset($validatedData['rut'])) {
-            $client->rut = $validatedData['rut'];
+        if (isset($validatedData['rut_empresa'])) {
+            $client->rut_empresa = $validatedData['rut_empresa'];
         }
-        if (isset($validatedData['name'])) {
-            $client->name = $validatedData['name'];
+        if (isset($validatedData['rubro'])) {
+            $client->rubro = $validatedData['rubro'];
         }
-        if (isset($validatedData['email'])) {
-            $client->email = $validatedData['email'];
+        if (isset($validatedData['razon_social'])) {
+            $client->razon_social = $validatedData['razon_social'];
+        }
+        if (isset($validatedData['telefono'])) {
+            $client->telefono = $validatedData['telefono'];
+        }
+        if (isset($validatedData['direccion'])) {
+            $client->direccion = $validatedData['direccion'];
+        }
+        if (isset($validatedData['nombre_contacto'])) {
+            $client->nombre_contacto = $validatedData['nombre_contacto'];
+        }
+        if (isset($validatedData['email_contacto'])) {
+            $client->email_contacto = $validatedData['email_contacto'];
         }
 
         $client->save();
 
-        return response()->json(['message' => 'Cliente actualizado exitosamente', 'client' => $client], 200);
+        // Puedes redirigir al dashboard con un mensaje de éxito
+        return redirect()->route('client.dashboard')->with('success', 'Cliente actualizado exitosamente');
     }
 
     /**

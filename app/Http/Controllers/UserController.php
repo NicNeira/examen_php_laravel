@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -33,19 +36,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'rut' => ['required', 'string', 'max:12', 'unique:users'],
+            'lastname' => ['required', 'string', 'max:255'],
         ]);
 
-        $user = new User();
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
-        $user->password = Hash::make($validatedData['password']);
-        $user->save();
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'rut' => $request->rut,
+            'lastname' => $request->lastname,
+        ]);
 
-        return response()->json(['message' => 'Usuario creado exitosamente', 'user' => $user], 201);
+        event(new Registered($user));
+
+        // logearse automáticamente después de registrarse
+        // Auth::login($user);
+
+        return redirect(route('user.dashboard', absolute: false));
     }
 
     /**
@@ -65,8 +77,8 @@ class UserController extends Controller
         // Encuentra el usuario por su ID
         $user = User::findOrFail($id);
 
-        // Retorna la vista para editar un usuario, pasando el usuario a la vista
-        return view('users.edit', compact('user'));
+        // Retorna los datos del usuario en formato JSON
+        return response()->json($user);
     }
 
     /**
@@ -77,24 +89,26 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|required|string|min:8',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'rut' => 'required|string|max:12|unique:users,rut,' . $id,
+            'lastname' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed', // Permite null para no cambiar contraseña
         ]);
 
-        if (isset($validatedData['name'])) {
-            $user->name = $validatedData['name'];
-        }
-        if (isset($validatedData['email'])) {
-            $user->email = $validatedData['email'];
-        }
-        if (isset($validatedData['password'])) {
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->rut = $validatedData['rut'];
+        $user->lastname = $validatedData['lastname'];
+
+        if (!empty($validatedData['password'])) {
             $user->password = Hash::make($validatedData['password']);
         }
 
         $user->save();
 
-        return response()->json(['message' => 'Usuario actualizado exitosamente', 'user' => $user], 200);
+        // Redireccionar al dashboard de usuarios con un mensaje de éxito
+        return redirect()->route('user.dashboard')->with('success', 'Usuario actualizado exitosamente.');
     }
 
     /**

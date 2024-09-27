@@ -11,6 +11,10 @@
   height: 64px;
 }
 
+#loadingSpinner {
+  display: none; 
+}
+
 .app-brand-logo.demo {
   -ms-flex-align: center;
   align-items: center;

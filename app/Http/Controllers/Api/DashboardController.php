@@ -15,6 +15,10 @@ class DashboardController extends Controller
         $totalProducts = Product::count();
         $totalClients = Client::count();
 
-        return view('dashboard', compact('totalUsers', 'totalProducts', 'totalClients'));
+        return response()->json([
+            'total_users' => $totalUsers,
+            'total_products' => $totalProducts,
+            'total_clients' => $totalClients
+        ]);
     }
 }
